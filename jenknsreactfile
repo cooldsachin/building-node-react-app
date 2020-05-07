@@ -3,6 +3,11 @@ node {
     stage('SCM Checkout'){
         git credentialsId: 'GIT_CREDENTIALS', url:  'https://github.com/cooldsachin/building-node-react-app.git',branch: 'master'
     }
+    
+    stage('install package and run tests'){
+        sh 'npm install'
+        sh 'npm run build-test'
+    }
         
         /*see https://github.com/javahometech/node-app/blob/master/Jenkinsfile for reference set up
         stage('Build') {
