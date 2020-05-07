@@ -26,7 +26,7 @@ node {
               bat ' kubectl apply -f react-test.yaml'
             }
         }
-    }
+    
     post {
         always {
             echo 'Portal image is deployed in to Kubernetes '
