@@ -1,16 +1,8 @@
-pipeline {
-    agent {
-        label 'reactapp-node' // This is my slave node machine I want to run this pipeline on my slave agent 
-    }
+node {
     
-    stages {
-        /* see  # https://gist.github.com/nicferrier/2277987 for automating clone + pull */
-        stage('Cloneing deployments') {
-            steps {
-              echo 'Cloneing && pulling....'
-              bat 'cd deployment  && git pull origin'
-            }
-        }
+    stage('SCM Checkout'){
+        git credentialsId: 'GIT_CREDENTIALS', url:  'https://github.com/cooldsachin/building-node-react-app.git',branch: 'master'
+    }
         
         //see https://github.com/javahometech/node-app/blob/master/Jenkinsfile for reference set up
         stage('Build') {
