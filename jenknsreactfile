@@ -4,28 +4,40 @@ node {
         git credentialsId: 'GIT_CREDENTIALS', url:  'https://github.com/cooldsachin/building-node-react-app.git',branch: 'master'
     }
         
-        //see https://github.com/javahometech/node-app/blob/master/Jenkinsfile for reference set up
+        /*see https://github.com/javahometech/node-app/blob/master/Jenkinsfile for reference set up
         stage('Build') {
             steps {
                bat "docker build --no-cache . -t react-image:v.${BUILD_NUMBER}"
                
             }
+        }*/
+        stage('Build Docker Image'){
+            sh 'docker build -t cooldsachin/react-image .'
         }
-         // see https://code-maze.com/ci-jenkins-docker/ for build number
+         /* see https://code-maze.com/ci-jenkins-docker/ for build number
          stage('Publish') {
             steps {
                echo 'Publishing....'
                bat "docker tag  react-image:v.${BUILD_NUMBER} react-image:v.${BUILD_NUMBER}"
                bat "docker push react-image:v.${BUILD_NUMBER}"
             }
+        } */
+        stage('Push Docker Image'){
+            withCredentials([string(credentialsId: 'DOKCER_HUB_PASSWORD', variable: 'DOKCER_HUB_PASSWORD')]) {
+             sh "docker login -u cooldsachin -p ${DOKCER_HUB_PASSWORD}"
+            }
+            sh 'docker push cooldsachin/spring-boot-mongo'
         }
-        stage('Deployment') {
+      /*  stage('Deployment') {
             steps {
                echo 'Deployinging....'
               bat ' kubectl delete -f react-test.yaml'
               bat ' kubectl apply -f react-test.yaml'
             }
-        }
+        } */
+        stage("Deploy To Kuberates Cluster"){
+            sh 'kubectl apply -f react-test.yaml'
+        } 
     
     post {
         always {
