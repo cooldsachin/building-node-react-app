@@ -6,7 +6,7 @@ node {
     
     stage('install package and run tests'){
         sh 'npm install'
-        sh 'npm run build-test'
+        sh 'npm run build'
     }
         
         /*see https://github.com/javahometech/node-app/blob/master/Jenkinsfile for reference set up
